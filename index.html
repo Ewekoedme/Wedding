@@ -1039,6 +1039,7 @@
       console.assert(!document.body.textContent.includes('musicToggle'), 'Music toggle code removed');
       console.assert(Boolean(document.querySelector('#successMessage .success-icon')), 'Animated RSVP success icon exists');
       console.assert(Boolean(document.getElementById('blessingsBoard')), 'Blessings board exists');
+      console.assert(Boolean(BLESSINGS_SHEET_ID), 'Blessings Google Sheet ID exists');
     }
 
     updateCountdown();
@@ -1049,6 +1050,8 @@
     // To make this live for all guests, deploy the Google Apps Script provided in the chat
     // and paste the Web App URL below.
     const BLESSINGS_API_URL = 'https://script.google.com/macros/s/AKfycbxAVGe1jILQPYCZ-VhaNSTBUQaZ_3dYFoByIS3dEQZYpvf0K2Vp2tktT0sZUQoFG64chQ/exec';
+    const BLESSINGS_SHEET_ID = '138DULiWhhsloRZe71jgCf_N30zaRAsycdZFBd12I4_w';
+    const BLESSINGS_SHEET_NAME = 'Blessings';
 
     function escapeHtml(value) {
       return String(value)
@@ -1086,7 +1089,7 @@
           await fetch(BLESSINGS_API_URL, {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ name, message, createdAt: new Date().toISOString() })
           });
         } else {
@@ -1098,7 +1101,7 @@
         nameInput.value = '';
         messageInput.value = '';
         setBlessingsStatus('Blessing sent. 祝福已送出。');
-        await renderBlessings();
+        setTimeout(renderBlessings, 1200);
       } catch (error) {
         console.error(error);
         setBlessingsStatus('Unable to send now. Please try again later. 暂时无法发送，请稍后再试。');
@@ -1108,16 +1111,54 @@
       }
     }
 
-    async function loadSharedBlessings() {
-      if (!BLESSINGS_API_URL) {
-        return JSON.parse(localStorage.getItem('blessings') || '[]');
+    function loadSharedBlessings() {
+      if (!BLESSINGS_SHEET_ID) {
+        return Promise.resolve(JSON.parse(localStorage.getItem('blessings') || '[]'));
       }
 
-      const response = await fetch(BLESSINGS_API_URL, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error('Unable to load blessings');
-      }
-      return response.json();
+      return new Promise((resolve, reject) => {
+        const callbackName = `blessingsCallback_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+        const script = document.createElement('script');
+        const sheetName = encodeURIComponent(BLESSINGS_SHEET_NAME);
+        const url = `https://docs.google.com/spreadsheets/d/${BLESSINGS_SHEET_ID}/gviz/tq?tqx=responseHandler:${callbackName}&sheet=${sheetName}&t=${Date.now()}`;
+
+        const cleanup = () => {
+          delete window[callbackName];
+          script.remove();
+        };
+
+        window[callbackName] = (response) => {
+          try {
+            const rows = response.table.rows || [];
+            const blessings = rows
+              .slice(1)
+              .map((row) => {
+                const cells = row.c || [];
+                return {
+                  createdAt: cells[0]?.f || cells[0]?.v || '',
+                  name: cells[1]?.v || 'Anonymous 匿名',
+                  message: cells[2]?.v || ''
+                };
+              })
+              .filter((item) => item.message)
+              .reverse();
+
+            cleanup();
+            resolve(blessings);
+          } catch (error) {
+            cleanup();
+            reject(error);
+          }
+        };
+
+        script.onerror = () => {
+          cleanup();
+          reject(new Error('Unable to load Google Sheet blessings'));
+        };
+
+        script.src = url;
+        document.body.appendChild(script);
+      });
     }
 
     async function renderBlessings() {
