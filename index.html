@@ -388,6 +388,101 @@
     }
     .about-card p:last-child { margin-bottom: 0; }
 
+
+    /* Video Placeholder */
+    .video-card {
+      width: min(820px, 100%);
+      margin: 0 auto;
+      padding: clamp(22px, 4vw, 34px);
+      background: rgba(255, 253, 248, 0.84);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .video-placeholder {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 24px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background:
+        linear-gradient(135deg, rgba(212, 163, 115, 0.18), rgba(141, 163, 153, 0.16)),
+        rgba(255, 255, 255, 0.55);
+      border: 1px dashed rgba(212, 163, 115, 0.48);
+      color: var(--muted);
+    }
+
+    .video-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      pointer-events: none;
+    }
+
+    .video-placeholder-inner {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    .video-play-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 253, 248, 0.82);
+      color: var(--sun);
+      box-shadow: 0 12px 28px rgba(70, 50, 35, 0.10);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .video-placeholder-title {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+.video-placeholder-text {
+  font-size: 0.98rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.video-player {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 720px;
+  display: block;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #000;
+  object-fit: contain;
+  box-shadow: 0 14px 34px rgba(70, 50, 35, 0.10);
+}
+
+.video-note {
+  margin-top: 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  line-height: 1.75;
+}
+
     /* V-Card (details) */
     .v-card { width: min(620px, 100%); margin: 0 auto; padding: 0; overflow: hidden; }
     .v-card-top {
@@ -1295,6 +1390,46 @@
       .time-label { font-size: 0.55rem; }
     }
 
+
+
+    @media (max-width: 720px) {
+      .video-card {
+        padding: 18px 14px;
+        border-radius: 26px;
+        background: linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(255, 249, 243, 0.86));
+        border: 1px solid rgba(255, 255, 255, 0.82);
+        box-shadow: 0 16px 38px rgba(82, 58, 42, 0.11);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .video-placeholder {
+        border-radius: 22px;
+        aspect-ratio: 16 / 9;
+      }
+
+      .video-placeholder::before {
+        inset: 10px;
+        border-radius: 16px;
+      }
+
+      .video-play-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+      }
+
+      .video-placeholder-title {
+        font-size: 1.35rem;
+      }
+
+      .video-placeholder-text {
+        font-size: 0.88rem;
+        line-height: 1.7;
+      }
+    }
+
   </style>
 </head>
 
@@ -1393,6 +1528,32 @@
             在时光流转之中，我们的故事悄然走向圆满，我们将携手展开新的章节。诚挚邀请您莅临见证尤子晋与高可芯的婚礼盛典，与我们一同分享这份爱、喜悦与祝福。
           </p>
         </div>
+      </div>
+    </section>
+
+
+    <!-- Video Placeholder -->
+    <section id="video">
+      <div class="container">
+        <div class="section-heading reveal">
+          <span>Our Video</span>
+          <h2>影片回忆</h2>
+        </div>
+<div class="video-card reveal reveal-delay-1">
+  <!-- Put IMG_5579.mp4 in the same folder as this index.html -->
+  <!-- Thumbnail uses the first moment of IMG_5579.mp4; no separate poster file needed. -->
+  <video
+    class="video-player"
+    controls
+    preload="metadata"
+    playsinline>
+    <source src="IMG_5579.mp4#t=0.1" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <p class="video-note">
+    Our little video memory · 属于我们的影片回忆
+  </p>
+</div>
       </div>
     </section>
 
