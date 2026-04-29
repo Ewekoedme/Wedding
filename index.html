@@ -1686,7 +1686,21 @@
     Alvin Ewe &amp; Janice Ko · 12 September 2026<br>
     <span class="footer-tagline">#EweKOedMe / 晋夜芯光 · 共赴良辰</span>
   </footer>
+  <audio id="bgMusic" src="music.mp3" autoplay loop></audio>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const music = document.getElementById('bgMusic');
+    music.volume = 0.45;
 
+    const playPromise = music.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        console.log('Browser blocked autoplay with sound.');
+      });
+    }
+  });
+</script>
   <script>
     'use strict';
 
