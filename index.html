@@ -389,7 +389,7 @@
     .about-card p:last-child { margin-bottom: 0; }
 
 
-    /* Video Placeholder */
+    /* Video */
     .video-card {
       width: min(820px, 100%);
       margin: 0 auto;
@@ -456,32 +456,32 @@
       margin-bottom: 6px;
     }
 
-.video-placeholder-text {
-  font-size: 0.98rem;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-}
+    .video-placeholder-text {
+      font-size: 0.98rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
 
-.video-player {
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  max-height: 720px;
-  display: block;
-  border-radius: 24px;
-  overflow: hidden;
-  background: #000;
-  object-fit: contain;
-  box-shadow: 0 14px 34px rgba(70, 50, 35, 0.10);
-}
+    .youtube-player {
+      width: min(420px, 100%);
+      aspect-ratio: 9 / 16;
+      display: block;
+      margin: 0 auto;
+      border: 0;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 14px 34px rgba(70, 50, 35, 0.10);
+    }
 
-.video-note {
-  margin-top: 14px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.92rem;
-  letter-spacing: 0.04em;
-  line-height: 1.75;
-}
+    .video-note {
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      line-height: 1.75;
+    }
 
     /* V-Card (details) */
     .v-card { width: min(620px, 100%); margin: 0 auto; padding: 0; overflow: hidden; }
@@ -1428,6 +1428,12 @@
         font-size: 0.88rem;
         line-height: 1.7;
       }
+
+      .youtube-player {
+        width: 100%;
+        max-width: 360px;
+        border-radius: 22px;
+      }
     }
 
   </style>
@@ -1442,6 +1448,7 @@
     <!-- Desktop links -->
     <div class="nav-links">
       <a href="#about">About Us</a>
+      <a href="#video">Our Video</a>
       <a href="#details">Wedding Details</a>
       <a href="#rsvp">RSVP</a>
       <a href="#blessings">Blessings</a>
@@ -1460,6 +1467,7 @@
   <!-- Mobile drawer -->
   <div class="nav-drawer" id="navDrawer" role="navigation" aria-label="Mobile menu" aria-hidden="true">
     <a href="#about"     class="drawer-link" data-close><span class="drawer-icon">♡</span>About Us 关于我们</a>
+    <a href="#video"     class="drawer-link" data-close><span class="drawer-icon">▶</span>Our Video 影片回忆</a>
     <a href="#details"   class="drawer-link" data-close><span class="drawer-icon">◇</span>Wedding Details 婚礼详情</a>
     <a href="#rsvp"      class="drawer-link" data-close><span class="drawer-icon">✉</span>RSVP 回函</a>
     <a href="#blessings" class="drawer-link" data-close><span class="drawer-icon">✦</span>Blessings 祝福</a>
@@ -1532,32 +1540,28 @@
     </section>
 
 
-    <!-- Video Placeholder -->
+    <!-- Video -->
     <section id="video">
       <div class="container">
         <div class="section-heading reveal">
           <span>Our Video</span>
           <h2>影片回忆</h2>
         </div>
-<div class="video-card reveal reveal-delay-1">
-  <!-- Put IMG_5579.mp4 in the same folder as this index.html -->
-  <!-- Thumbnail uses the first moment of IMG_5579.mp4; no separate poster file needed. -->
 
-  https://youtube.com/shorts/40KDhitntT4?feature=share
+        <div class="video-card reveal reveal-delay-1">
+          <iframe
+            class="youtube-player"
+            src="https://www.youtube.com/embed/40KDhitntT4"
+            title="Our little video memory"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
 
-  
-  <video
-    class="video-player"
-    controls
-    preload="metadata"
-    playsinline>
-    <source src="IMG_5579.mp4#t=0.1" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  <p class="video-note">
-    Our little video memory · 属于我们的影片回忆
-  </p>
-</div>
+          <p class="video-note">
+            Our little video memory · 属于我们的影片回忆
+          </p>
+        </div>
       </div>
     </section>
 
